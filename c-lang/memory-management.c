@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 void exapmle1()
 {
@@ -71,7 +72,19 @@ void example3()
 void example4()
 {
   printf("example 4: dynamic memory \n");
+  char *k;
+  int i;
 
+  k = malloc(26 * sizeof(char));
+
+  for (i = 0; i < 26; i++)
+  {
+    k[i] = i + 'a';
+  }
+
+  printf("string = %s \n", k);
+
+  free(k);
 }
 
 int main()
