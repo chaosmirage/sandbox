@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 int string_length(const char *str)
 {
   // p - адресный тип, char - тип переменной (области памяти ???) расположенной по адресу p
