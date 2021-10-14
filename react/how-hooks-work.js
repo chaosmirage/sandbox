@@ -67,26 +67,49 @@ const MyReact = (function () {
 
       return [hooks[currentHook++], setState];
     },
+    useRef(initialValue) {
+      hooks[currentHook] = hooks[currentHook] ||
+        initialValue || { current: null };
+
+      return hooks[currentHook++];
+    },
   };
 })();
 
 function Counter2() {
   const [count, setCount] = MyReact.useState(0);
   const [text, setText] = MyReact.useState("test");
+  const elementRef = MyReact.useRef();
 
   MyReact.useEffect(() => {
     console.log("effect: count changed", count);
+
+    if (elementRef.current) {
+      elementRef.current.data = "test";
+    }
   }, [count]);
 
   MyReact.useEffect(() => {
     console.log("effect: text changed", text);
   }, [text]);
 
+  MyReact.useEffect(() => {
+    console.log("effect: ref changed");
+  }, [elementRef]);
+
   return {
     click: () => setCount(count + 1),
     type: (text) => setText(text),
     noop: () => setCount(count),
-    render: () => console.log("render:", { count, text }),
+    render: () => {
+      elementRef.current = { ...elementRef.current, toString: () => "<br />" };
+
+      console.log("render:", {
+        count,
+        text,
+        elementRef: elementRef.current,
+      });
+    },
   };
 }
 
@@ -102,4 +125,7 @@ App.noop();
 App = MyReact.render(Counter2);
 
 App.click();
+App = MyReact.render(Counter2);
+
+App = MyReact.render(Counter2);
 App = MyReact.render(Counter2);
